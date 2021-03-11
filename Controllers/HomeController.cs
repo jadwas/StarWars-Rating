@@ -1,21 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using StarWars_Rating.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using StarWars_Rating.API;
+using StarWars_Rating.DataAccess;
+using StarWars_Rating.DataAccess.Models;
 
 namespace StarWars_Rating.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ISwApiConnector _swApiConnector;
+        private readonly IRatingRepository _ratingRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ISwApiConnector swApiConnector, IRatingRepository ratingRepository)
         {
-            _logger = logger;
+            _swApiConnector = swApiConnector;
+            _ratingRepository = ratingRepository;
         }
 
         public IActionResult Index()
@@ -23,9 +26,24 @@ namespace StarWars_Rating.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> FilmDetails(int film, CancellationToken cancellationToken)
         {
-            return View();
+            var loadedFilm = await _swApiConnector.GetFilmAsync(film, cancellationToken);
+            return View(loadedFilm);
+        }
+        
+        
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> AddComment(Rate rate)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("FilmDetails", new { film = rate.FilmId });
+            }
+
+            await _ratingRepository.CreateAsync(rate);
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

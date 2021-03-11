@@ -1,0 +1,10 @@
+﻿@model StarWars_Rating.API.Models.FilmCollection
+<div class="col-md-12" style="padding-top:50px;">
+    @foreach (var film in Model.Results)
+    {
+        <h1>@film.Title</h1>
+        <h3>@film.Director</h3>
+        @Html.ActionLink("Details", "FilmDetails", new { film = film.Id })
+        <br />
+    }
+</div>

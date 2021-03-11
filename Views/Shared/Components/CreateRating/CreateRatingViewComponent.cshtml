@@ -1,0 +1,21 @@
+﻿@model StarWars_Rating.DataAccess.Models.Rate
+
+
+@Html.HiddenFor(h => h.FilmId)
+<form asp-controller="Home" asp-action="AddComment" asp-route-parent="@Model.FilmId" method="post">
+    @Html.AntiForgeryToken()
+    <input id="FilmId"
+           name="FilmId"
+           type="hidden"
+           value="@Model.FilmId" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="@Model.UserName" name="UserName" placeholder="Add user name" />
+        <span asp-validation-for="@Model.UserName"></span>
+    </div>
+
+    <div class="form-group">
+        <select asp-for="@Model.Rating" asp-items="@Enumerable.Range(0, 11).Select(s => new SelectListItem(s.ToString(), s.ToString()))"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add rate</button>
+</form>

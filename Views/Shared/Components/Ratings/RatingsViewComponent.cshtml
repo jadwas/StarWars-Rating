@@ -1,0 +1,19 @@
+﻿@model System.Collections.Generic.List<StarWars_Rating.DataAccess.Models.Rate>
+
+@if (Model.Any()) { 
+    <table>
+        <thead>
+        <td>User</td>
+        <td>Rate</td>
+        <td>Date</td>
+        </thead>
+        @foreach (var comment in Model)
+        {
+            <tr>
+                <td>@comment.UserName</td>
+                <td>@comment.Rating</td>
+                <td>@comment.StoreDateTime.ToString()</td>
+            </tr>
+        }
+    </table>
+}

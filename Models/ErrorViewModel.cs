@@ -1,5 +1,3 @@
-using System;
-
 namespace StarWars_Rating.Models
 {
     public class ErrorViewModel

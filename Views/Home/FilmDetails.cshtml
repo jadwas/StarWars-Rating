@@ -1,0 +1,10 @@
+﻿@model StarWars_Rating.API.Models.Film
+@{
+    ViewData["Title"] = "Film details";
+}
+<div class="text-center">
+    <h1 class="display-4">@Model.Title</h1>
+    <p>@Model.OpeningCrawl</p>
+    @await Component.InvokeAsync("CreateRating", new { Model.Id })
+    @await Component.InvokeAsync("Ratings", new { Model.Id })
+</div>

@@ -1,0 +1,4 @@
+﻿1. Implement all swapi.dev classes
+2. Load full film desctiption
+3. Few more tests
+3. Make UI pretty
